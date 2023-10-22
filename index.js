@@ -6,14 +6,14 @@ import generateStats from './svg.js';
 const app = express();
 
 app.get('/', async (req, res) => {
-    const userName = req.query.userName;
+    const username = req.query.username;
 
-    if (!userName) {
-        let errorMessage = { error: "Add your geeksForGeeks user Name in the URL, e.g., /?userName=<YOUR_USER_NAME>" };
+    if (!username) {
+        let errorMessage = { error: "Add your geeksForGeeks user Name in the URL, e.g., /?username=<YOUR_USER_NAME>" };
         return res.send(errorMessage);
     }
 
-    let url = `https://auth.geeksforgeeks.org/user/${userName}/practice/`;
+    let url = `https://auth.geeksforgeeks.org/user/${username}/practice/`;
 
     try {
         let response = await axios.get(url);
@@ -66,7 +66,7 @@ app.get('/', async (req, res) => {
             }
         }
 
-        values["userName"] = userName;
+        values["userName"] = username;
         values["totalProblemsSolved"] = totalProblemSolved;
         values["Progress"] = (80 * Math.PI * values["currentStreak"]) / values["globalLongestStreak"];
 
