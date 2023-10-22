@@ -1,0 +1,25 @@
+{
+    "name": "geeksforgeeksstatscard",
+    "version": "1.0.0",
+    "description": "API to get GFG stats as SVG",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "start": "node index.js"
+    },
+    "keywords": [
+        "GFG",
+        "geeksForGeeks",
+        "stats",
+        "github"
+    ],
+    "author": "Nikhil Suryavanshi",
+    "devDependencies": {
+        "nodemon": "^2.0.15"
+    },
+    "dependencies": {
+        "cheerio": "^1.0.0-rc.12",
+        "express": "^4.18.2",
+        "request": "^2.88.2"
+    }
+}
