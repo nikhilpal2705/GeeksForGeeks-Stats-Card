@@ -574,9 +574,19 @@ xmlns:xlink="http://www.w3.org/1999/xlink" id="root">
     #total-streak-ring {
         stroke: var(--color-4)
     }
+    #background {
+        stroke-width: 0;
+        width: 500px;
+        height: 320px;
+        transform: translate(0px, 0px)
+    }
 
     svg {
         opacity: 1
+    }
+
+    #background {
+        rx: 10px
     }
 </style>
 </svg>`)
