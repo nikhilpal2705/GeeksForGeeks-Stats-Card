@@ -62,7 +62,7 @@ app.get('/', async (req, res) => {
             } else if ($(scoreCardName[i]).text() === scoreCardArr[1]) {
                 values["TotalSolved"] = $(scoreCardValues[i]).text();
             } else if ($(scoreCardName[i]).text() === scoreCardArr[2]) {
-                values["MonthSolved"] = $(scoreCardValues[i]).text();
+                values["MonthScore"] = $(scoreCardValues[i]).text();
             }
         }
 

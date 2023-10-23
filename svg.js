@@ -1,5 +1,5 @@
 const generateStats = (data) => {
-    return (`<svg width="500" height="400" viewBox="0 0 500 400" version="1.1" xmlns="http://www.w3.org/2000/svg"
+    return (`<svg width="500" height="320" viewBox="0 0 500 320" version="1.1" xmlns="http://www.w3.org/2000/svg"
 xmlns:xlink="http://www.w3.org/1999/xlink" id="root">
 <title id="_bq">${data.userName} | GFG Stats Card</title>
 <style id="default-colors">
@@ -71,8 +71,8 @@ xmlns:xlink="http://www.w3.org/1999/xlink" id="root">
     <g id="total-solved">
         <text id="total-solved-title">Total Problem Solved</text><text id="total-solved-count">${data.TotalSolved ? data.TotalSolved : '_ _'}</text>
     </g>
-    <g id="month-solved">
-        <text id="month-solved-title">Monthly Coding Score</text><text id="month-solved-count">${data.MonthSolved ? data.MonthSolved : '_ _'}</text>
+    <g id="month-score">
+        <text id="month-score-title">Monthly Coding Score</text><text id="month-score-count">${data.MonthScore ? data.MonthScore : '_ _'}</text>
     </g>
 </g>
 <style id="_lx">
@@ -316,19 +316,19 @@ xmlns:xlink="http://www.w3.org/1999/xlink" id="root">
         animation: fade_in 1 0.3s 1.7s forwards
     }
 
-    #month-solved {
+    #month-score {
         transform: translate(410px, 20px);
         text-anchor: middle;
     }
 
-    #month-solved-title {
+    #month-score-title {
         fill: var(--text-1);
         font-size: 0.9rem;
         opacity: 0;
         animation: fade_in 1 0.3s 1.7s forwards
     }
 
-    #month-solved-count {
+    #month-score-count {
         transform: translate(0px, 35px);
         fill: var(--text-0);
         font-size: 2rem;
