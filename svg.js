@@ -347,7 +347,7 @@ xmlns:xlink="http://www.w3.org/1999/xlink" id="root">
     #_1d {
         stroke: var(--bg-1);
         stroke-width: 1;
-        transform: translate(324px, 8px);
+        transform: translate(328px, 8px);
         opacity: 0;
         animation: fade_in 1 0.3s 1.7s forwards
     }
