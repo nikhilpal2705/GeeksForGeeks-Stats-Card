@@ -68,7 +68,8 @@ app.get('/', async (req, res) => {
 
         values["userName"] = username;
         values["totalProblemsSolved"] = totalProblemSolved;
-        values["Progress"] = (90 * Math.PI * values["currentStreak"]) / values["globalLongestStreak"];
+        // 100 is the diameter of the progress circle
+        values["Progress"] = (100 * Math.PI * values["currentStreak"]) / values["globalLongestStreak"];
 
         const svg = generateStats(values);
         res.setHeader("Content-Type", "image/svg+xml");

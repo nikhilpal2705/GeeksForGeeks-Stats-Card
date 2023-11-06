@@ -127,7 +127,7 @@ xmlns:xlink="http://www.w3.org/1999/xlink" id="root">
     #total-streak-bg {
         cx: 40px;
         cy: 40px;
-        r: 45px;
+        r: 50px;
         stroke: var(--bg-4);
         stroke-width: 7px;
     }
@@ -135,7 +135,7 @@ xmlns:xlink="http://www.w3.org/1999/xlink" id="root">
     #total-streak-ring {
         cx: 40px;
         cy: 40px;
-        r: 45px;
+        r: 50px;
         transform: rotate(-90deg);
         transform-origin: 40px 40px;
         stroke-dasharray: ${data.Progress} 1000;
