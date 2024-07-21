@@ -13,7 +13,7 @@ app.get('/', async (req, res) => {
         return res.send(errorMessage);
     }
 
-    let url = `https://auth.geeksforgeeks.org/user/${username}/practice/`;
+    let url = `https://www.geeksforgeeks.org/user/${username}/`;
 
     try {
         let response = await axios.get(url);
@@ -24,14 +24,17 @@ app.get('/', async (req, res) => {
         let problemDifficultyTag = ["School", "Basic", "Easy", "Medium", "Hard"];
         let k = 0;
 
-        let data = $('.tabs.tabs-fixed-width.linksTypeProblem');
+        let problemNavbar = $('.problemNavbar_head__cKSRi');
+        let scoreCardName = $('.scoreCard_head_card_left--text__hs9G4');
+        let scoreCardValues = $('.scoreCard_head_card_left--score__pC6ZA');
+        let streakCount = $('.circularProgressBar_head_mid_streakCnt__MFOF1').text().split("/");
 
-        if (data.length === 0) {
+        if (problemNavbar.length === 0) {
             return res.status(400).send({ error: "User does not exist or has not solved any problems on geeksforgeeks" });
         }
 
         let totalProblemSolved = 0;
-        let rawData = $(data[0]).text();
+        let rawData = $(problemNavbar[0]).text();
 
         for (let i = 0; i < rawData.length; i++) {
             if (rawData[i] === '(') {
@@ -47,12 +50,9 @@ app.get('/', async (req, res) => {
             }
         }
 
-        let streakCount = $('.streakCnt').text().split("/");
         values["currentStreak"] = parseInt(streakCount[0].trim());
         values["globalLongestStreak"] = parseInt(streakCount[1].trim());
 
-        let scoreCardValues = $('.score_card_value');
-        let scoreCardName = $('.score_card_name');
 
         let scoreCardArr = ["Overall Coding Score", "Total Problem Solved", "Monthly Coding Score"];
 
