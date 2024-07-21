@@ -39,7 +39,7 @@ xmlns:xlink="http://www.w3.org/1999/xlink" id="root">
             </g>
         </svg>
     </g>
-</g><a href="https://auth.geeksforgeeks.org/user/${data.userName}/practice/" target="_blank" id="username"><text
+</g><a href="https://www.geeksforgeeks.org/user/${data.userName}/" target="_blank" id="username"><text
         id="username-text">${data.userName}</text></a><text id="ranking">${''}</text>
 <g id="total-streak">
     <circle id="total-streak-bg" />

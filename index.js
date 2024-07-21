@@ -44,25 +44,25 @@ app.get('/', async (req, res) => {
                     i++;
                 }
 
-                let tempProblems = parseInt(rawData.substring(tempStart, i));
+                let tempProblems = parseInt(rawData.substring(tempStart, i)) ?? 0;
                 values[problemDifficultyTag[k++]] = tempProblems;
                 totalProblemSolved += tempProblems;
             }
         }
 
-        values["currentStreak"] = parseInt(streakCount[0].trim());
-        values["globalLongestStreak"] = parseInt(streakCount[1].trim());
+        values["currentStreak"] = parseInt(streakCount[0]?.trim()) ?? 0;
+        values["globalLongestStreak"] = parseInt(streakCount[1]?.trim()) ?? 0;
 
 
         let scoreCardArr = ["Overall Coding Score", "Total Problem Solved", "Monthly Coding Score"];
 
         for (let i = 0; i < scoreCardName.length; i++) {
             if ($(scoreCardName[i]).text() === scoreCardArr[0]) {
-                values["TotalScore"] = $(scoreCardValues[i]).text();
+                values["TotalScore"] = $(scoreCardValues[i]).text() ?? 0;
             } else if ($(scoreCardName[i]).text() === scoreCardArr[1]) {
-                values["TotalSolved"] = $(scoreCardValues[i]).text();
+                values["TotalSolved"] = $(scoreCardValues[i]).text() ?? 0;
             } else if ($(scoreCardName[i]).text() === scoreCardArr[2]) {
-                values["MonthScore"] = $(scoreCardValues[i]).text();
+                values["MonthScore"] = $(scoreCardValues[i]).text() ?? 0;
             }
         }
 
