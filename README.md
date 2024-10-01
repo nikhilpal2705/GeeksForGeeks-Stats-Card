@@ -12,7 +12,7 @@ API to get count of total problems solved on [GeeksForGeeks](https://practice.ge
 > `node.js`  `express`  `cheerio`
 
 ## Preview
-<p align="center"> <a href="https://auth.geeksforgeeks.org/user/nikhilpal2705/practice/"><img src="https://geeks-for-geeks-stats-card.vercel.app/?username=nikhilpal2705" alt="GFG stats"/></a></p>
+<p align="center"> <a href="https://www.geeksforgeeks.org/user/nikhilpal2705/"><img src="https://geeks-for-geeks-stats-card.vercel.app/?username=nikhilpal2705" alt="GFG stats"/></a></p>
 
 # How to use 
 - To show in markdown (Github profile) simply copy below code and replace **`<YOUR_USERNAME>`** with your GeeksForGeeks UserName
@@ -43,7 +43,7 @@ if you want to redirect to your geeksForgeeks profile or any other replace **`<Y
 ```
 OR
 ```
-<a href="https://auth.geeksforgeeks.org/user/<YOUR_USERNAME>/practice/"><img src="https://geeks-for-geeks-stats-card.vercel.app/?username=<YOUR_USERNAME>" alt="GFG stats"/></a>
+<a href="https://www.geeksforgeeks.org/user/<YOUR_USERNAME>/"><img src="https://geeks-for-geeks-stats-card.vercel.app/?username=<YOUR_USERNAME>" alt="GFG stats"/></a>
 ```
 
 ### API End Point

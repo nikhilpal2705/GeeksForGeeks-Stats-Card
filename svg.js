@@ -1,7 +1,7 @@
 const generateStats = (data) => {
     return (`<svg width="500" height="320" viewBox="0 0 500 320" version="1.1" xmlns="http://www.w3.org/2000/svg"
 xmlns:xlink="http://www.w3.org/1999/xlink" id="root">
-<title id="_bq">${data.userName} | GFG Stats Card</title>
+<title id="_bq">${data.userHandle} | GFG Stats Card</title>
 <style id="default-colors">
     svg {
         opacity: 0
@@ -39,26 +39,29 @@ xmlns:xlink="http://www.w3.org/1999/xlink" id="root">
             </g>
         </svg>
     </g>
-</g><a href="https://auth.geeksforgeeks.org/user/${data.userName}/practice/" target="_blank" id="username"><text
-        id="username-text">${data.userName}</text></a><text id="ranking">${''}</text>
+</g><a href="https://www.geeksforgeeks.org/user/${data.userHandle}/" target="_blank" id="username"><text
+        id="username-text">${data.userHandle}</text></a><text id="ranking">${''}</text>
 <g id="total-streak">
     <circle id="total-streak-bg" />
-    <circle id="total-streak-ring" /><text id="total-streak-text">${data.currentStreak} /${data.globalLongestStreak}</text>
+    <circle id="total-streak-ring" /><text id="total-streak-text">${data.pod_solved_longest_streak} /${data.pod_solved_global_longest_streak}</text>
     <text id="streak-text">STREAK</text>
     <text id="days-text">days</text>
 </g>
 <g id="solved">
-    <g id="school-solved"><text id="school-solved-type">School</text><text
-            id="school-solved-count">${data.School}</text>
+    <g id="school-solved"><text id="school-solved-type">School</text>
+    <text id="school-solved-count">${data.School}</text>
     </g>
-    <g id="basic-solved"><text id="basic-solved-type">Basic</text><text id="basic-solved-count">${data.Basic}</text>
+    <g id="basic-solved"><text id="basic-solved-type">Basic</text>
+    <text id="basic-solved-count">${data.Basic}</text>
     </g>
-    <g id="easy-solved"><text id="easy-solved-type">Easy</text><text id="easy-solved-count">${data.Easy}</text>
+    <g id="easy-solved"><text id="easy-solved-type">Easy</text>
+    <text id="easy-solved-count">${data.Easy}</text>
     </g>
-    <g id="medium-solved"><text id="medium-solved-type">Medium</text><text
-            id="medium-solved-count">${data.Medium}</text>
+    <g id="medium-solved"><text id="medium-solved-type">Medium</text>
+    <text id="medium-solved-count">${data.Medium}</text>
     </g>
-    <g id="hard-solved"><text id="hard-solved-type">Hard</text><text id="hard-solved-count">${data.Hard}</text>
+    <g id="hard-solved"><text id="hard-solved-type">Hard
+    </text><text id="hard-solved-count">${data.Hard}</text>
     </g>
 </g>
 <g id="total-activity">
@@ -66,13 +69,17 @@ xmlns:xlink="http://www.w3.org/1999/xlink" id="root">
     <line x1="0" y1="0" x2="0" y2="64" id="_1c" />
     <line x1="0" y1="0" x2="0" y2="64" id="_1d" />
     <g id="overall-score">
-        <text id="overall-score-title">Overall Coding Score</text><text id="overall-score-count">${data.TotalScore ? data.TotalScore : '_ _'}</text>
+        <text id="overall-score-title">Coding Score</text>
+        <text id="overall-score-count">${data.total_score || '_ _'}</text>
     </g>
     <g id="total-solved">
-        <text id="total-solved-title">Total Problem Solved</text><text id="total-solved-count">${data.TotalSolved ? data.TotalSolved : '_ _'}</text>
+        <text id="total-solved-title">Problem Solved</text>
+        <text id="total-solved-count">${data.total_problems_solved || '_ _'}</text>
     </g>
     <g id="month-score">
-        <text id="month-score-title">Monthly Coding Score</text><text id="month-score-count">${data.MonthScore ? data.MonthScore : '_ _'}</text>
+        <text id="month-score-title">${data.current_rating ? "Contest Rating" : "Monthly Coding Score"}</text>
+        <text id="month-score-count">${data.current_rating ? data.current_rating : (data.monthly_score || '_ _')}
+</text>
     </g>
 </g>
 <style id="_lx">
