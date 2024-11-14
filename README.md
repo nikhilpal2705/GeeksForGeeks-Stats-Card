@@ -51,10 +51,11 @@ OR
 If you want to use light theme you can use the `?theme=light`
 
 ```md
-![](https://geeks-for-geeks-stats-card.vercel.app/nikhilpal2705?theme=dark)
 ![](https://geeks-for-geeks-stats-card.vercel.app/nikhilpal2705?theme=light)
 ```
 <p align="center"> <a href="https://www.geeksforgeeks.org/user/nikhilpal2705/"><img src="https://geeks-for-geeks-stats-card.vercel.app/nikhilpal2705?theme=light" alt="GFG stats"/></a></p>
+
+
 ### API End Point
 ```
 https://geeks-for-geeks-stats-card.vercel.app/
