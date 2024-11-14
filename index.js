@@ -133,12 +133,21 @@ const fetchNewProfileData = async (username) => {
     }
 };
 
-// Route to handle incoming requests
+// Route to handle blank request
 app.get('/', async (req, res) => {
-    try {
-        const username = req.query.username;
+    const username = req.params.username;
         if (!username) {
-            return res.status(400).json({ error: "Add your geeksForGeeks user Name in the URL, e.g., /?username=<YOUR_USER_NAME>" });
+            return res.status(400).json({ error: "Add your geeksForGeeks user Name in the URL, e.g., /<YOUR_USER_NAME>" });
+        }
+})
+
+// Route to handle incoming requests
+app.get('/:username', async (req, res) => {
+    try {
+        const username = req.params.username;
+        const theme = req.query.theme;
+        if (!username) {
+            return res.status(400).json({ error: "Add your geeksForGeeks user Name in the URL, e.g., /<YOUR_USER_NAME>" });
         }
 
         let values;
@@ -162,7 +171,7 @@ app.get('/', async (req, res) => {
             : 0;
 
         // Generate SVG stats and send as a response
-        const svg = generateStats(values);
+        const svg = await generateStats(values, theme);
         res.setHeader("Content-Type", "image/svg+xml");
         res.setHeader("Cache-Control", "s-max-age=60, stale-while-revalidate");
         return res.send(svg);
