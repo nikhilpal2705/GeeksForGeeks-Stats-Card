@@ -1,9 +1,15 @@
 import express from 'express';
+import path from 'path';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import generateStats from './svg.js';
+import { fileURLToPath } from 'url';  // Import to work with ESM
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
+
+// Serve static files from the "public" directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Helper function to extract and parse JSON from a string
 const extractJsonString = (rawString) => {

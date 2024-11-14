@@ -1,33 +1,33 @@
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath, pathToFileURL } from 'url';
+import { fileURLToPath } from 'url';
 
-// Get the path to the CSS file
-
-// Read the CSS file content asynchronously
-const loadCSS = (cssFilePath) => {
-    return new Promise((resolve, reject) => {
-        fs.readFile(cssFilePath, 'utf-8', (err, data) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(data);
-            }
-        });
-    });
-};
 const generateStats = async (data, theme = 'dark') => {
-    const cssFilePath = path.join(fileURLToPath(import.meta.url), '../svg.css');
-    const svgCSS = await loadCSS(cssFilePath);
-    const themeColorFile = theme == 'light' ? path.join(fileURLToPath(import.meta.url), '../light.css') : path.join(fileURLToPath(import.meta.url), '../dark.css')
-    const themeColor = await loadCSS(themeColorFile)
+    const loadCSS = (cssFilePath) => {
+        return new Promise((resolve, reject) => {
+            fs.readFile(cssFilePath, 'utf-8', (err, data) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(data);
+                }
+            });
+        });
+    };
+
+    // Load the dynamic CSS
+    const cssFilePath = path.join(fileURLToPath(import.meta.url), `../public/${theme === 'light' ? 'light.css' : 'dark.css'}`);
+    const themeCSS = await loadCSS(cssFilePath);
+
+    const svgFilePath = path.join(fileURLToPath(import.meta.url), '../public/svg.css');
+    const svgCSS = await loadCSS(svgFilePath);
 
     return (`
     <svg width="500" height="320" viewBox="0 0 500 320" version="1.1" xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink" id="root">
         <title id="_bq">${data.userHandle} | GFG Stats Card</title>
         <style id="default-colors">
-            ${themeColor}
+            ${themeCSS}
             :root{
                 --progress-dasharray: ${data.Progress}
             }
