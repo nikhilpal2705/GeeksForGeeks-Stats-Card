@@ -12,12 +12,12 @@ API to get count of total problems solved on [GeeksForGeeks](https://practice.ge
 > `node.js`  `express`  `cheerio`
 
 ## Preview
-<p align="center"> <a href="https://www.geeksforgeeks.org/user/nikhilpal2705/"><img src="https://geeks-for-geeks-stats-card.vercel.app/?username=nikhilpal2705" alt="GFG stats"/></a></p>
+<p align="center"> <a href="https://www.geeksforgeeks.org/user/nikhilpal2705/"><img src="https://geeks-for-geeks-stats-card.vercel.app/nikhilpal2705" alt="GFG stats"/></a></p>
 
 # How to use 
 - To show in markdown (Github profile) simply copy below code and replace **`<YOUR_USERNAME>`** with your GeeksForGeeks UserName
 
-- if you have blank space in your username dont use Blank Space use %20
+- If you have blank space in your username dont use Blank Space use %20
 
 > That's it, if you get any error , make sure you have solved at least 1 problem on GFG and cross check username and link 
 
@@ -25,27 +25,36 @@ API to get count of total problems solved on [GeeksForGeeks](https://practice.ge
 
 #### Copy this code 👇🏻
 ```
-[![GeeksForGeeks stats](https://geeks-for-geeks-stats-card.vercel.app/?username=<YOUR_USERNAME>)](https://auth.geeksforgeeks.org/user/<YOUR_USERNAME>/practice/)
+[![GeeksForGeeks stats](https://geeks-for-geeks-stats-card.vercel.app/<YOUR_USERNAME>)](https://auth.geeksforgeeks.org/user/<YOUR_USERNAME>/practice/)
 ```
 OR
 
 ```
-<img src="https://geeks-for-geeks-stats-card.vercel.app/?username=<YOUR_USERNAME>" alt="GFG stats"/>
+<img src="https://geeks-for-geeks-stats-card.vercel.app/<YOUR_USERNAME>" alt="GFG stats"/>
 ```
 
 ## Make Clickable
-if you want to redirect to your geeksForgeeks profile or any other replace **`<YOUR_LINK_HERE>`**.
+If you want to redirect to your geeksForgeeks profile or any other replace **`<YOUR_LINK_HERE>`**.
 > DONT FORGET to replace username as mentioned before
 
 > Dont use `"` in your link , simple paste it
 ```
-[![GeeksForGeeks stats](https://geeks-for-geeks-stats-card.vercel.app/?username=<YOUR_USERNAME>)](<YOUR_LINK_HERE>)
+[![GeeksForGeeks stats](https://geeks-for-geeks-stats-card.vercel.app/<YOUR_USERNAME>)](<YOUR_LINK_HERE>)
 ```
 OR
 ```
-<a href="https://www.geeksforgeeks.org/user/<YOUR_USERNAME>/"><img src="https://geeks-for-geeks-stats-card.vercel.app/?username=<YOUR_USERNAME>" alt="GFG stats"/></a>
+<a href="https://www.geeksforgeeks.org/user/<YOUR_USERNAME>/"><img src="https://geeks-for-geeks-stats-card.vercel.app/<YOUR_USERNAME>" alt="GFG stats"/></a>
 ```
 
+## Theme
+#### `theme` (default: `dark`)
+If you want to use light theme you can use the `?theme=light`
+
+```md
+![](https://geeks-for-geeks-stats-card.vercel.app/nikhilpal2705?theme=dark)
+![](https://geeks-for-geeks-stats-card.vercel.app/nikhilpal2705?theme=light)
+```
+<p align="center"> <a href="https://www.geeksforgeeks.org/user/nikhilpal2705/"><img src="https://geeks-for-geeks-stats-card.vercel.app/nikhilpal2705?theme=light" alt="GFG stats"/></a></p>
 ### API End Point
 ```
 https://geeks-for-geeks-stats-card.vercel.app/
