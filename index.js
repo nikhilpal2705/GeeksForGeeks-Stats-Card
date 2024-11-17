@@ -139,23 +139,15 @@ const fetchNewProfileData = async (username) => {
     }
 };
 
-// Route to handle blank request
-app.get('/', async (req, res) => {
-    const username = req.params.username;
-        if (!username) {
-            return res.status(400).json({ error: "Add your geeksForGeeks user Name in the URL, e.g., /<YOUR_USER_NAME>" });
-        }
-})
-
-// Route to handle incoming requests
-app.get('/:username', async (req, res) => {
+const getCard = async (req, res) => {
     try {
-        const username = req.params.username;
+        const username = req.params.username || req.query.username;;
         const theme = req.query.theme;
+        const raw = req.query.raw;
         if (!username) {
             return res.status(400).json({ error: "Add your geeksForGeeks user Name in the URL, e.g., /<YOUR_USER_NAME>" });
         }
-
+        
         let values;
 
         // Try fetching from the new profile page
@@ -172,10 +164,13 @@ app.get('/:username', async (req, res) => {
         }
 
         // Calculate progress based on streaks
-        values["Progress"] = values.pod_solved_global_longest_streak
+        values["ProgressBar"] = values.pod_solved_global_longest_streak
             ? (100 * Math.PI * values.pod_solved_longest_streak) / values.pod_solved_global_longest_streak
             : 0;
 
+        if (raw === "true") {
+            return res.json(values)
+        }
         // Generate SVG stats and send as a response
         const svg = await generateStats(values, theme);
         res.setHeader("Content-Type", "image/svg+xml");
@@ -186,7 +181,13 @@ app.get('/:username', async (req, res) => {
         console.error(`Error processing request for ${req.query.username}:`, error.message);
         res.status(500).json({ error: "An error occurred while fetching and processing the data." });
     }
-});
+}
+
+// Route to handle blank request
+app.get('/', getCard)
+
+// Route to handle incoming requests
+app.get('/:username', getCard)
 
 // Start the server
 const port = process.env.PORT || 2001;
