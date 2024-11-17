@@ -29,7 +29,7 @@ const generateStats = async (data, theme = 'dark') => {
         <style id="default-colors">
             ${themeCSS}
             :root{
-                --progress-dasharray: ${data.Progress}
+                --progress-dasharray: ${data.ProgressBar}
             }
         </style>
         <rect id="background" />
