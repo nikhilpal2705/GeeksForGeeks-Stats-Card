@@ -3,11 +3,11 @@
     "version": "1.0.0",
     "description": "API to get GFG stats as SVG",
     "author": "Nikhil Suryavanshi",
-    "main": "index.js",
-    "type": "module",
+    "main": "server.js",
+    "type": "commonjs",
     "scripts": {
-        "start": "node index.js",
-        "dev": "nodemon index.js"
+        "start": "node server.js",
+        "dev": "nodemon server.js"
     },
     "keywords": [
         "GFG",

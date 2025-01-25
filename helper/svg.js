@@ -1,25 +1,12 @@
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+const path = require('path');
+const { loadCSS } = require('./common');
 
-const generateStats = async (data, theme = 'dark') => {
-    const loadCSS = (cssFilePath) => {
-        return new Promise((resolve, reject) => {
-            fs.readFile(cssFilePath, 'utf-8', (err, data) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(data);
-                }
-            });
-        });
-    };
-
+module.exports.generateStats = async (data, theme = 'dark') => {
     // Load the dynamic CSS
-    const cssFilePath = path.join(fileURLToPath(import.meta.url), `../public/${theme === 'light' ? 'light.css' : 'dark.css'}`);
+    const cssFilePath = path.join(__dirname, `../public/${theme === 'light' ? 'light.css' : 'dark.css'}`);
     const themeCSS = await loadCSS(cssFilePath);
 
-    const svgFilePath = path.join(fileURLToPath(import.meta.url), '../public/svg.css');
+    const svgFilePath = path.join(__dirname, '../public/svg.css');
     const svgCSS = await loadCSS(svgFilePath);
 
     return (`
@@ -97,4 +84,3 @@ const generateStats = async (data, theme = 'dark') => {
 `)
 
 }
-export default generateStats;
