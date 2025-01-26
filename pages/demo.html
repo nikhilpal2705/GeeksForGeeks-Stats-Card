@@ -28,7 +28,6 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            /* padding: 20px; */
         }
 
         h1 {
@@ -127,13 +126,8 @@
 
         #preview {
             width: 100%;
-            max-width: 500px;
+            min-width: 500px;
             margin-top: 20px;
-            padding: 20px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
 
@@ -213,12 +207,12 @@
             const pre = document.createElement("pre");
 
             // Clear previous content
-            previewDiv.innerHTML = "";
 
             try {
                 if (rawCheckbox.checked) {
                     const response = await axios.get(url());
                     pre.textContent = JSON.stringify(response.data, null, 4);
+                    previewDiv.innerHTML = "";
                     previewDiv.appendChild(pre);
                 } else {
                     const img = document.createElement("img");
@@ -228,11 +222,12 @@
                         img.onload = () => resolve();
                         img.onerror = () => reject(new Error("User not found or data unavailable."));
                     });
-
+                    previewDiv.innerHTML = "";
                     previewDiv.appendChild(img);
                 }
             } catch (error) {
                 pre.textContent = error.response?.data || error.message;
+                previewDiv.innerHTML = "";
                 previewDiv.appendChild(pre);
             }
         }
