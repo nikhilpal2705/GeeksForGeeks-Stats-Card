@@ -1,13 +1,14 @@
 const { fetchNewProfileData, fetchOldProfileData } = require('../helper/fetchData');
 const { generateSvg } = require('../helper/svg');
+const path = require('path');
 
-const getCard = async (req, res) => {
+const getCard = async (req, res, next) => {
     try {
         const username = req.params.username || req.query.username;;
         const theme = req.query.theme;
         const raw = req.query.raw;
         if (!username) {
-            return res.status(400).json({ error: "Add your geeksForGeeks user Name in the URL, e.g., /<YOUR_USER_NAME>" });
+            return next();
         }
 
         let values;
@@ -22,7 +23,7 @@ const getCard = async (req, res) => {
 
         // If values are still null, it means both fetch attempts failed
         if (!values) {
-            return res.status(404).json({ error: `Data for user ${username} not found.` });
+            return res.status(404).json(`Data for user '${username}' not found.`);
         }
 
         // Calculate progress based on streaks
@@ -41,8 +42,26 @@ const getCard = async (req, res) => {
 
     } catch (error) {
         console.error(`Error processing request for ${req.query.username}:`, error.message);
-        res.status(500).json({ error: "An error occurred while fetching and processing the data." });
+        res.status(500).json("An error occurred while fetching and processing the data.");
     }
 }
 
-module.exports = { getCard }
+const getDemo = async (req, res) => {
+    try {
+        const demoFilePath = path.join(__dirname, '../pages/demo.html');
+        res.sendFile(demoFilePath);
+    } catch (error) {
+        res.status(500).send('An error occurred while loading the demo page.');
+    }
+};
+
+const notFound = async (req, res) => {
+    res.send("404 - Not Found.");
+};
+
+
+module.exports = {
+    getCard,
+    getDemo,
+    notFound
+}
