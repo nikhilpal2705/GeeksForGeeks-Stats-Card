@@ -1,7 +1,7 @@
 const path = require('path');
 const { loadCSS } = require('./common');
 
-module.exports.generateStats = async (data, theme = 'dark') => {
+const generateSvg = async (data, theme = 'dark') => {
     // Load the dynamic CSS
     const cssFilePath = path.join(__dirname, `../public/${theme === 'light' ? 'light.css' : 'dark.css'}`);
     const themeCSS = await loadCSS(cssFilePath);
@@ -84,3 +84,5 @@ module.exports.generateStats = async (data, theme = 'dark') => {
 `)
 
 }
+
+module.exports = { generateSvg }

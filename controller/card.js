@@ -1,5 +1,5 @@
 const { fetchNewProfileData, fetchOldProfileData } = require('../helper/fetchData');
-const { generateStats } = require('../helper/svg');
+const { generateSvg } = require('../helper/svg');
 
 const getCard = async (req, res) => {
     try {
@@ -34,7 +34,7 @@ const getCard = async (req, res) => {
             return res.json(values)
         }
         // Generate SVG stats and send as a response
-        const svg = await generateStats(values, theme);
+        const svg = await generateSvg(values, theme);
         res.setHeader("Content-Type", "image/svg+xml");
         res.setHeader("Cache-Control", "s-max-age=60, stale-while-revalidate");
         return res.send(svg);
