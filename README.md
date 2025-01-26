@@ -10,6 +10,10 @@ This API allows you to fetch the count of total problems solved on [GeeksForGeek
 
 ## Preview
 <p align="center">
+  <a href="https://geeks-for-geeks-stats-card.vercel.app/">Playground: Try It Now</a>
+</p>
+
+<p align="center">
   <a href="https://www.geeksforgeeks.org/user/nikhilpal2705/">
     <img src="https://gfgstatscard.vercel.app/nikhilpal2705" alt="GFG stats" />
   </a>
