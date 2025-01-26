@@ -10,7 +10,7 @@ This API allows you to fetch the count of total problems solved on [GeeksForGeek
 
 ## Preview
 <p align="center">
-  <a href="https://geeks-for-geeks-stats-card.vercel.app/">Playground: Try It Now</a>
+  <a href="https://gfgstatscard.vercel.app/">Playground: Try It Now</a>
 </p>
 
 <p align="center">
