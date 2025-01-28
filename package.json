@@ -19,6 +19,7 @@
         "nodemon": "^2.0.22"
     },
     "dependencies": {
+        "@vercel/analytics": "^1.4.1",
         "axios": "^1.7.7",
         "cheerio": "^1.0.0",
         "express": "^4.21.0"
