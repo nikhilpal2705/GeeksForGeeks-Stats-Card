@@ -1,11 +1,12 @@
 const express = require('express');
 const path = require('path');
-const routes = require("./routes");
+const routes = require("./routes/api");
 
 const app = express();
 
 // Serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'pages')));
 
 // Use routes from routes/index.js
 app.use("/", routes);
