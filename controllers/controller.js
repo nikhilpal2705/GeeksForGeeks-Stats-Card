@@ -1,5 +1,5 @@
-const { fetchNewProfileData, fetchOldProfileData } = require('../helper/fetchData');
-const { generateSvg } = require('../helper/svg');
+const { fetchNewProfileData, fetchOldProfileData } = require('../helpers/fetchData');
+const { generateSvg } = require('../helpers/svg');
 const path = require('path');
 
 const getCard = async (req, res, next) => {

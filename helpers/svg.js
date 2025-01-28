@@ -3,10 +3,10 @@ const { loadCSS } = require('./common');
 
 const generateSvg = async (data, theme = 'dark') => {
     // Load the dynamic CSS
-    const cssFilePath = path.join(__dirname, `../public/${theme === 'light' ? 'light.css' : 'dark.css'}`);
+    const cssFilePath = path.join(__dirname, `../public/css/${theme === 'light' ? 'light.css' : 'dark.css'}`);
     const themeCSS = await loadCSS(cssFilePath);
 
-    const svgFilePath = path.join(__dirname, '../public/svg.css');
+    const svgFilePath = path.join(__dirname, '../public/css/svg.css');
     const svgCSS = await loadCSS(svgFilePath);
 
     return (`
