@@ -191,10 +191,18 @@
     <a href="https://github.com/nikhilpal2705/GeeksforGeeks-Stats-Card" target="_blank">Documentation on GitHub</a>
     <script>
         let isRaw = document.querySelector("#raw").checked;
-
+        init()
+        function init() {
+            // Reset form values
+            document.querySelector("#username").value = "nikhilpal2705"; // Clear username input
+            document.querySelector("#theme").value = "dark"; // Set theme to default
+            document.querySelector("#raw").checked = false; // Uncheck the toggle switch
+            toggleRaw(); // Update state based on raw toggle
+            preview(); // Call preview initially
+        }
         function toggleRaw() {
             const themeSelect = document.getElementById('theme');
-            isRaw = document.getElementById('raw').checked;
+            isRaw = document.querySelector('#raw').checked;
             if (isRaw) {
                 themeSelect.disabled = true;
             } else {
@@ -235,8 +243,6 @@
                 previewDiv.appendChild(pre);
             }
         }
-        // Call preview initially
-        preview();
 
         function go() {
             let win = window.open();

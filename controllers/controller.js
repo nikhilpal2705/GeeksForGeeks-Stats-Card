@@ -49,6 +49,7 @@ const getCard = async (req, res, next) => {
 const getDemo = async (req, res) => {
     try {
         const demoFilePath = path.join(__dirname, '../pages/demo.html');
+        // Send the HTML file
         res.sendFile(demoFilePath);
     } catch (error) {
         res.status(500).send('An error occurred while loading the demo page.');
