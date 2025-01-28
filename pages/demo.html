@@ -262,6 +262,15 @@
             return document.querySelector("#" + id).value.trim() || "";
         }
     </script>
+    <script>
+        if (window.location.hostname !== 'localhost') {
+            window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+            var script = document.createElement('script');
+            script.src = '/_vercel/insights/script.js';
+            script.defer = true;
+            document.head.appendChild(script);
+        }
+    </script>
 </body>
 
 </html>
