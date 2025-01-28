@@ -11,8 +11,164 @@
         content="A simple tool for every coder. Show your GeeksforGeeks stats on your GitHub profile or your website!">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link href="/demo.css" rel="stylesheet">
+    <style>
+        /* General Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #e8f1f5, #d0e3f0);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 16px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .toggle-switch {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            font-size: 14px;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .toggle-switch input {
+            display: none;
+        }
+
+        .toggle-slider {
+            position: relative;
+            width: 50px;
+            height: 24px;
+            margin-right: 10px;
+            background-color: #ddd;
+            border-radius: 12px;
+            transition: 0.3s;
+        }
+
+        .toggle-slider:before {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+        }
+
+        .toggle-switch input:checked+.toggle-slider {
+            background-color: #007bff;
+        }
+
+        .toggle-switch input:checked+.toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        button {
+            padding: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            width: 100%;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            /* transform: translateY(-2px); */
+        }
+
+        button:active {
+            transform: translateY(-2px);
+        }
+
+        .button-container {
+            display: flex;
+            margin-top: 10px;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+        }
+
+        #preview {
+            width: 100%;
+            min-width: 500px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        pre {
+            text-align: left;
+            background-color: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            overflow-x: auto;
+            color: #333;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 20px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .button-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            #preview {
+                min-width: 0px;
+            }
+        }
+    </style>
 </head>
+
 
 <body>
     <h1>GeeksforGeeks Stats Card</h1>
@@ -33,7 +189,73 @@
     </div>
     <div id="preview"></div>
     <a href="https://github.com/nikhilpal2705/GeeksforGeeks-Stats-Card" target="_blank">Documentation on GitHub</a>
-    <script src="/demo.js"></script>
+    <script>
+        let isRaw = document.querySelector("#raw").checked;
+
+        function toggleRaw() {
+            const themeSelect = document.getElementById('theme');
+            isRaw = document.getElementById('raw').checked;
+            if (isRaw) {
+                themeSelect.disabled = true;
+            } else {
+                themeSelect.disabled = false;
+            }
+        }
+
+        function url() {
+
+            if (!value("username")) document.querySelector("#username").value = "nikhilpal2705";
+            return (location.origin + "/" + encodeURIComponent(value("username")) + (isRaw ? "?raw=true" : "?theme=" + encodeURIComponent(value("theme"))));
+        }
+
+        async function preview() {
+            const previewDiv = document.querySelector("#preview");
+            const pre = document.createElement("pre");
+
+            try {
+                if (isRaw) {
+                    const response = await axios.get(url());
+                    pre.textContent = JSON.stringify(response.data, null, 4);
+                    previewDiv.innerHTML = "";
+                    previewDiv.appendChild(pre);
+                } else {
+                    const img = document.createElement("img");
+
+                    await new Promise((resolve, reject) => {
+                        img.src = url();
+                        img.onload = () => resolve();
+                        img.onerror = () => reject(new Error("User not found or data unavailable."));
+                    });
+                    previewDiv.innerHTML = "";
+                    previewDiv.appendChild(img);
+                }
+            } catch (error) {
+                pre.textContent = error.response?.data || error.message;
+                previewDiv.innerHTML = "";
+                previewDiv.appendChild(pre);
+            }
+        }
+        // Call preview initially
+        preview();
+
+        function go() {
+            let win = window.open();
+            win.location = url();
+        }
+
+        function md() {
+            if (isRaw) {
+                prompt("URL:", url());
+            } else {
+                let code = "![GeeksforGeeks Stats](" + url() + ")";
+                prompt("Markdown Code:", code);
+            }
+        }
+
+        function value(id) {
+            return document.querySelector("#" + id).value.trim() || "";
+        }
+    </script>
 </body>
 
 </html>
