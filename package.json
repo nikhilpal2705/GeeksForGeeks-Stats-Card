@@ -16,7 +16,7 @@
         "github"
     ],
     "devDependencies": {
-        "nodemon": "^2.0.22"
+        "nodemon": "^3.1.9"
     },
     "dependencies": {
         "@vercel/analytics": "^1.4.1",
