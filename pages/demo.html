@@ -274,6 +274,14 @@
                 min-width: 0px;
             }
 
+            #preview .loader {
+                margin: 75px auto;
+            }
+
+            .theme-toggle-icon {
+                font-size: 20px;
+            }
+
             input,
             select,
             button {
@@ -281,6 +289,13 @@
             }
         }
     </style>
+    <script>
+        (function () {
+            let currentTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.classList.add(currentTheme + '-theme');
+            localStorage.setItem('theme', currentTheme);
+        })();
+    </script>
 </head>
 
 <body>
@@ -289,7 +304,7 @@
     <div class="card">
         <span class="theme-toggle-icon" onclick="toggleTheme()" title="Change Theme"><i id="theme-icon"></i></span>
         <input id="username" placeholder="Your GeeksforGeeks Username">
-        <select id="theme">
+        <select id="cardTheme">
             <option value="dark" selected>Dark</option>
             <option value="light">Light</option>
         </select>
@@ -327,20 +342,19 @@
 
         function toggleTheme() {
             const theme = currentTheme === 'dark' ? 'light' : 'dark';
-            document.body.classList.remove(currentTheme + '-theme');
-            document.body.classList.add(theme + '-theme');
-            localStorage.setItem('theme', theme);
+            document.documentElement.classList.remove(currentTheme + '-theme');
+            document.documentElement.classList.add(theme + '-theme');
             currentTheme = theme;
+            localStorage.setItem('theme', currentTheme);
             document.getElementById('theme-icon').className = currentTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
         }
 
         function init() {
             document.querySelector("#username").value = "nikhilpal2705";
-            document.querySelector("#theme").value = "dark";
+            document.querySelector("#cardTheme").value = "dark";
             document.querySelector("#raw").checked = false;
 
-            // Apply the current theme if stored
-            document.body.classList.add(currentTheme + '-theme');
+            // Change icon class based on theme
             document.getElementById('theme-icon').className = currentTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
 
             toggleRaw();
@@ -348,7 +362,7 @@
         }
 
         function toggleRaw() {
-            const themeSelect = document.getElementById('theme');
+            const themeSelect = document.getElementById('cardTheme');
             isRaw = document.querySelector('#raw').checked;
             if (isRaw) {
                 themeSelect.disabled = true;
@@ -360,7 +374,7 @@
         function url() {
 
             if (!value("username")) document.querySelector("#username").value = "nikhilpal2705";
-            return (location.origin + "/" + encodeURIComponent(value("username")) + (isRaw ? "?raw=true" : "?theme=" + encodeURIComponent(value("theme"))));
+            return (location.origin + "/" + encodeURIComponent(value("username")) + (isRaw ? "?raw=true" : "?theme=" + encodeURIComponent(value("cardTheme"))));
         }
 
         async function preview() {
