@@ -5,25 +5,27 @@ const { track } = require("@vercel/analytics/server");
 
 const app = express();
 
-// Middleware to log analytics for each request
+// Middleware to log analytics for each request (only in production)
 app.use((req, res, next) => {
     if (process.env.NODE_ENV === "production") {
         track("pageview", {
-            path: req.path,         // URL path, e.g., "/about"
-            method: req.method,     // HTTP method, e.g., "GET"
-            userAgent: req.headers["user-agent"],   // User device info
+            path: req.path,
+            method: req.method,
+            userAgent: req.headers["user-agent"],
         });
     }
     next();
 });
 
-// Serve static files from the "public" directory
-app.use(express.static(path.join(__dirname, "public")));
+// Serve static files (Only works locally; Vercel needs `vercel.json`)
+if (process.env.NODE_ENV !== "production") {
+    app.use(express.static(path.join(__dirname, "public")));
+}
 
-// Use routes from routes/api.js
+// Use API routes
 app.use("/", routes);
 
-// Only start the server if running locally
+// Start server only when running locally
 if (require.main === module) {
     const port = process.env.PORT || 2001;
     app.listen(port, () => {
@@ -31,5 +33,5 @@ if (require.main === module) {
     });
 }
 
-// Export app for Vercel
+// Export app for Vercel (Vercel will handle routing)
 module.exports = app;
