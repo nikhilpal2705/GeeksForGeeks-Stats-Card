@@ -1,7 +1,7 @@
 {
     "name": "geeksforgeeksstatscard",
     "version": "1.0.0",
-    "description": "API to get GFG stats as SVG",
+    "description": "API to get GFG stats as SVG or Raw",
     "author": "Nikhil Suryavanshi",
     "main": "server.js",
     "type": "commonjs",
