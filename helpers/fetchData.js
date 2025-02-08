@@ -102,7 +102,44 @@ const fetchNewProfileData = async (username) => {
     }
 };
 
+// Fetch data from the direct API
+const fetchDirectProfileData = async (username) => {
+    try {
+        let response = await axios.get(`https://www.geeksforgeeks.org/gfg-assets/_next/data/pdjI7pIK3Y46qDCFuGJcp/user/${username}.json`)
+        const jsonData = JSON.parse(JSON.stringify((response.data)));
+        const pageProps = jsonData?.pageProps || {};
+        const userInfo = pageProps.userInfo || {};
+        const userSubmissionsInfo = pageProps.userSubmissionsInfo || {}
+
+
+        // Gather user stats
+        const values = {
+            userHandle: pageProps.userHandle,
+            pod_solved_longest_streak: userInfo.pod_solved_longest_streak || 0,
+            pod_solved_global_longest_streak: userInfo.pod_solved_global_longest_streak || 0,
+            total_problems_solved: userInfo.total_problems_solved || 0,
+            total_score: userInfo.score || 0,
+            monthly_score: userInfo.monthly_score || 0,
+            current_rating: pageProps.contestData?.current_rating || 0
+        };
+
+        const problemStats = {
+            School: Object.keys(userSubmissionsInfo.School || {}).length || 0,
+            Basic: Object.keys(userSubmissionsInfo.Basic || {}).length || 0,
+            Easy: Object.keys(userSubmissionsInfo.Easy || {}).length || 0,
+            Medium: Object.keys(userSubmissionsInfo.Medium || {}).length || 0,
+            Hard: Object.keys(userSubmissionsInfo.Hard || {}).length || 0,
+        }
+        Object.assign(values, problemStats);
+        return values;
+    } catch (error) {
+        console.error(`Error fetching profile data using api for ${username}: ${error.message}`);
+        return null;
+    }
+}
+
 module.exports = {
     fetchOldProfileData,
-    fetchNewProfileData
+    fetchNewProfileData,
+    fetchDirectProfileData
 };
