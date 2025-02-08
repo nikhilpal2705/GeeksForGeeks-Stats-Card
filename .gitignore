@@ -1,3 +1,4 @@
 # Ignore the "node_modules" directory
 node_modules/
 package-lock.json
+.vercel
