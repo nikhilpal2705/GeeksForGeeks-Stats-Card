@@ -29,7 +29,7 @@
         }
 
         .light-theme {
-            --bg-color: #f5f5f5;
+            --bg-color: #ecf1f3;
             --color: #333;
             --card-bg-color: #ffffff;
             --h1-font-color: #333;
@@ -301,23 +301,27 @@
 <body>
     <img src="https://media.geeksforgeeks.org/gfg-gg-logo.svg" alt="geeksforgeeks" width="60" height="30">
     <h1>GeeksforGeeks Stats Card</h1>
+    <span class="theme-toggle-icon" onclick="toggleTheme()" title="Change Theme"><i id="theme-icon"></i></span>
     <div class="card">
-        <span class="theme-toggle-icon" onclick="toggleTheme()" title="Change Theme"><i id="theme-icon"></i></span>
         <input id="username" placeholder="Your GeeksforGeeks Username">
+
         <select id="cardTheme">
             <option value="dark" selected>Dark</option>
             <option value="light">Light</option>
         </select>
-        <label class="toggle-switch">
-            <input type="checkbox" id="raw" onchange="toggleRaw()">
+
+        <label class="toggle-switch" tabindex="0" onkeydown="handleToggleKey(event)">
+            <input type="checkbox" id="raw" onchange="toggleRaw()" />
             <span class="toggle-slider"></span>
             <span>Show Raw Data</span>
         </label>
+
         <div class="button-container">
             <button onclick="preview()">Preview</button>
             <button onclick="go()">Go</button>
             <button onclick="md(event)">Markdown</button>
         </div>
+
         <div id="preview">
             <div class="loader"></div>
         </div>
@@ -359,6 +363,15 @@
 
             toggleRaw();
             preview();
+        }
+
+        function handleToggleKey(event) {
+            if (event.key === "Enter" || event.key === " ") {
+                const checkbox = document.querySelector("#raw");
+                checkbox.checked = !checkbox.checked;
+                toggleRaw();
+                event.preventDefault();
+            }
         }
 
         function toggleRaw() {
