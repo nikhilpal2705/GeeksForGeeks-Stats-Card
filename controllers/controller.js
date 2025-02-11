@@ -1,4 +1,4 @@
-const { fetchNewProfileData, fetchOldProfileData, fetchDirectProfileData } = require('../helpers/fetchData');
+const { fetchNewProfileData, fetchDirectProfileData } = require('../helpers/fetchData');
 const { generateSvg } = require('../helpers/svg');
 const path = require('path');
 
@@ -13,17 +13,12 @@ const getCard = async (req, res, next) => {
 
         let values;
 
-        // Try fetching using direct api
-        values = await fetchDirectProfileData(username)
-
         // Try fetching from the new profile page
-        if (!values) {
-            values = await fetchNewProfileData(username);
-        }
+        values = await fetchNewProfileData(username)
 
-        // If fetching from the new profile fails, try the old profile
+        // Try fetching using direct api
         if (!values) {
-            values = await fetchOldProfileData(username);
+            values = await fetchDirectProfileData(username);
         }
 
         // If values are still null, it means both fetch attempts failed

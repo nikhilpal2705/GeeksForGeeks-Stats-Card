@@ -13,51 +13,21 @@ async function fetchData(url) {
     }
 }
 
-
-// Fetch data from the old GeeksForGeeks profile page
-const fetchOldProfileData = async (username) => {
+async function getBuildId(username) {
     try {
-        const $ = await fetchData(`https://auth.geeksforgeeks.org/user/${username}/practice/`);
-        const data = $('.tabs.tabs-fixed-width.linksTypeProblem');
+        // Fetch the main page to find `_buildManifest.js`
+        const mainPage = await axios.get(`https://www.geeksforgeeks.org/user/${username}`);
+        const match = mainPage.data.match(/\/_next\/static\/([^\/]+)\/_buildManifest\.js/);
 
-        if (data.length === 0) {
-            throw new Error(`User ${username} does not exist or has not solved any problems on GeeksForGeeks.`);
+        if (match) {
+            return match[1]; // Extracted buildId
+        } else {
         }
-
-        // Extract streak count
-        const streakCount = $('.streakCnt').text().split("/");
-
-        // Initialize values with extracted streak and coding stats
-        const values = {
-            userHandle: username,
-            pod_solved_longest_streak: parseInt(streakCount[0].trim()) || 0,
-            pod_solved_global_longest_streak: parseInt(streakCount[1].trim()) || 0,
-        };
-
-        // Extract various score stats
-        $('.score_card_name').each((i, element) => {
-            const name = $(element).text();
-            const value = $('.score_card_value').eq(i).text();
-
-            if (name === "Overall Coding Score") {
-                values.total_score = value;
-            } else if (name === "Total Problem Solved") {
-                values.total_problems_solved = value;
-            } else if (name === "Monthly Coding Score") {
-                values.monthly_score = value;
-            }
-        });
-
-        // Extract problem difficulty stats
-        const problemStats = extractProblemStats($(data[0]).text());
-        Object.assign(values, problemStats);
-
-        return values;
     } catch (error) {
-        console.error(`Error fetching old profile data for ${username}: ${error.message}`);
-        return null;
+        throw new Error("buildId not found");
     }
-};
+}
+
 
 // Fetch data from the new GeeksForGeeks profile page
 const fetchNewProfileData = async (username) => {
@@ -105,7 +75,8 @@ const fetchNewProfileData = async (username) => {
 // Fetch data from the direct API
 const fetchDirectProfileData = async (username) => {
     try {
-        let response = await axios.get(`https://www.geeksforgeeks.org/gfg-assets/_next/data/pdjI7pIK3Y46qDCFuGJcp/user/${username}.json`)
+        const buildId = await getBuildId(username);
+        let response = await axios.get(`https://www.geeksforgeeks.org/gfg-assets/_next/data/${buildId}/user/${username}.json`)
         const jsonData = JSON.parse(JSON.stringify((response.data)));
         const pageProps = jsonData?.pageProps || {};
         const userInfo = pageProps.userInfo || {};
@@ -139,7 +110,6 @@ const fetchDirectProfileData = async (username) => {
 }
 
 module.exports = {
-    fetchOldProfileData,
     fetchNewProfileData,
     fetchDirectProfileData
 };
