@@ -1,21 +1,8 @@
 const express = require("express");
 const path = require("path");
 const routes = require("./routes/api");
-const { track } = require("@vercel/analytics/server");
-
 const app = express();
 
-// Middleware to log analytics for each request (only in production)
-app.use((req, res, next) => {
-    if (process.env.NODE_ENV === "production") {
-        track("pageview", {
-            path: req.path,
-            method: req.method,
-            userAgent: req.headers["user-agent"],
-        });
-    }
-    next();
-});
 
 // Serve static files (Only works locally; Vercel needs `vercel.json`)
 if (process.env.NODE_ENV !== "production") {
