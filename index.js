@@ -1,8 +1,12 @@
 const express = require("express");
 const path = require("path");
-const routes = require("./routes/api");
+const api = require("./routes/api");
+const files = require("./routes/files");
+const logger = require("morgan");
 const app = express();
 
+// log api requests
+app.use(logger("dev"))
 
 // Serve static files (Only works locally; Vercel needs `vercel.json`)
 if (process.env.NODE_ENV !== "production") {
@@ -10,15 +14,11 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 // Use API routes
-app.use("/", routes);
+app.use("/", files);
+app.use("/", api);
 
-// Start server only when running locally
-if (require.main === module) {
-    const port = process.env.PORT || 2001;
-    app.listen(port, () => {
-        console.log(`Server running on port ${port}, http://localhost:${port}`);
-    });
-}
+const port = process.env.PORT || 2001;
+app.listen(port, () => {
+    console.log(`Server running on port ${port}, http://localhost:${port}`);
+});
 
-// Export app for Vercel (Vercel will handle routing)
-module.exports = app;
