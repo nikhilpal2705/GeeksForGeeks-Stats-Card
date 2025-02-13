@@ -1,10 +1,13 @@
 const express = require("express");
-const { getCard, getDemo, notFound } = require("../controllers/controller");
+const { getCard, notFound } = require("../controllers/controller");
 const router = express.Router();
 
-router.get('/', getCard); // Handle requests to "/"
-router.get('/:username', getCard); // Handle requests to "/:username"
-router.get('*', getDemo); // Handle requests when no username provided
-router.all('*', notFound);
+
+// Handle requests with query parameter (?username=...)
+router.get("/", getCard);
+// Handle requests with username in path (/:username)
+router.get("/:username", getCard);
+// Catch-all route for not found
+router.all("*", notFound);
 
 module.exports = router;
