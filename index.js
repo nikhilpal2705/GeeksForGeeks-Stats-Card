@@ -1,16 +1,16 @@
+require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const api = require("./routes/api");
 const files = require("./routes/files");
-const logger = require("morgan");
+const morgan = require("morgan");
 const app = express();
 
 // log api requests
-app.use(logger("dev"))
-
-// Serve static files (Only works locally; Vercel needs `vercel.json`)
-if (process.env.NODE_ENV !== "production") {
-    app.use(express.static(path.join(__dirname, "public")));
+if (process.env.NODE_ENV == "development") {
+    app.use(morgan("dev"));
+} else if (process.env.NODE_ENV == "stage") {
+    app.use(morgan("tiny"));
 }
 
 // Use API routes
