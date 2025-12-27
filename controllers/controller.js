@@ -13,12 +13,7 @@ const getCard = async (req, res, next) => {
         let values;
 
         // Try fetching from the new profile page
-        values = await fetchNewProfileData(username)
-
-        // Try fetching using direct api
-        if (!values) {
-            values = await fetchDirectProfileData(username);
-        }
+        values = await fetchDirectProfileData(username)
 
         // If values are still null, it means both fetch attempts failed
         if (!values) {
