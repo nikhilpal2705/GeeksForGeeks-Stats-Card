@@ -1,19 +1,38 @@
 const fs = require('fs');
 
 // Helper function to extract and parse JSON from a string
-const extractJsonString = (rawString) => {
+const extractJsonString = (html) => {
     try {
-        let jsonString = '';
-        let depth = 0;
+        const key = '\\"userData\\":';
+        const startIndex = html.indexOf(key);
+        if (startIndex === -1) throw new Error("userData not found");
 
-        for (let char of rawString) {
-            if (char === '{') depth++;
-            if (depth > 0) jsonString += char;
-            if (char === '}') depth--;
-            if (depth === 0 && jsonString) break;
+        let i = startIndex + key.length;
+
+        // find the first {
+        while (html[i] !== '{') i++;
+
+        const jsonStart = i;
+
+        let braceCount = 0;
+        let endIndex = i;
+
+        while (i < html.length) {
+            if (html[i] === '{') braceCount++;
+            else if (html[i] === '}') braceCount--;
+
+            if (braceCount === 0) {
+                endIndex = i + 1;
+                break;
+            }
+            i++;
         }
 
-        return JSON.parse(jsonString.trim());
+        let jsonText = html.slice(jsonStart, endIndex);
+        // unescape \" → "
+        jsonText = jsonText.replace(/\\"/g, '"');
+        const userData = JSON.parse(jsonText)
+        return userData.data;
     } catch (error) {
         console.error('Error parsing JSON:', error.message);
         return null;
@@ -21,21 +40,19 @@ const extractJsonString = (rawString) => {
 };
 
 // Helper function to extract problem stats based on difficulty
-const extractProblemStats = (rawData) => {
-    const problemDifficultyTag = ["School", "Basic", "Easy", "Medium", "Hard"];
-    const values = {};
-    let tagIndex = 0;
+const extractProblemStats = (result) => {
+    const counts = Object.fromEntries(
+        Object.entries(result).map(([key, value]) => [key, Object.keys(value).length])
+    );
 
-    for (let i = 0; i < rawData.length; i++) {
-        if (rawData[i] === '(') {
-            const tempStart = i + 1;
-            while (rawData[i] !== ')') i++;
-            const tempProblems = parseInt(rawData.substring(tempStart, i)) || 0;
-            values[problemDifficultyTag[tagIndex++]] = tempProblems;
-        }
+    const problemStats = {
+        School: counts.School || 0,
+        Basic: counts.Basic || 0,
+        Easy: counts.Easy || 0,
+        Medium: counts.Medium || 0,
+        Hard: counts.Hard || 0,
     }
-
-    return values;
+    return problemStats;
 };
 const loadCSS = (cssFilePath) => {
     return new Promise((resolve, reject) => {
