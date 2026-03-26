@@ -14,6 +14,7 @@ if (process.env.NODE_ENV == "development") {
 }
 
 // Use API routes
+app.use(express.static(path.join(__dirname, "public")));
 app.use("/", files);
 app.use("/", api);
 
@@ -21,4 +22,3 @@ const port = process.env.PORT || 2001;
 app.listen(port, () => {
     console.log(`Server running on port ${port}, http://localhost:${port}`);
 });
-

@@ -1,5 +1,5 @@
 const path = require('path');
-const { loadCSS } = require('./common');
+const { loadCSS, escapeSvgText } = require('./common');
 
 const generateSvg = async (data, theme = 'dark') => {
     // Load the dynamic CSS
@@ -8,11 +8,13 @@ const generateSvg = async (data, theme = 'dark') => {
 
     const svgFilePath = path.join(__dirname, '../public/css/svg.css');
     const svgCSS = await loadCSS(svgFilePath);
+    const safeUserHandle = escapeSvgText(data.userHandle);
+    const encodedUserHandle = encodeURIComponent(data.userHandle ?? "");
 
     return (`
     <svg width="500" height="320" viewBox="0 0 500 320" version="1.1" xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink" id="root">
-        <title id="_bq">${data.userHandle} | GFG Stats Card</title>
+        <title id="_bq">${safeUserHandle} | GFG Stats Card</title>
         <style id="default-colors">
             ${themeCSS}
             :root{
@@ -33,8 +35,8 @@ const generateSvg = async (data, theme = 'dark') => {
                     </g>
                 </svg>
             </g>
-        </g><a href="https://www.geeksforgeeks.org/user/${data.userHandle}/" target="_blank" id="username"><text
-                id="username-text">${data.userHandle}</text></a><text id="ranking">${''}</text>
+        </g><a href="https://www.geeksforgeeks.org/profile/${encodedUserHandle}/" target="_blank" id="username"><text
+                id="username-text">${safeUserHandle}</text></a><text id="ranking"></text>
         <g id="total-streak">
             <circle id="total-streak-bg" />
             <circle id="total-streak-ring" /><text id="total-streak-text">${data.pod_solved_longest_streak}
