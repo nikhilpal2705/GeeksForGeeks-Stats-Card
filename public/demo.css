@@ -561,8 +561,16 @@ button:active {
     }
 
     .brand-row {
-        align-items: flex-start;
-        flex-direction: column;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .theme-toggle {
+        padding: 9px 14px;
+        font-size: 0.95rem;
     }
 
     .footer-bar {
