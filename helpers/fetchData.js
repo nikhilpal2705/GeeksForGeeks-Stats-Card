@@ -1,12 +1,20 @@
 const axios = require("axios");
 const { extractJsonString, extractProblemStats } = require('./common');
 
+const GFG_AXIOS_OPTIONS = {
+    timeout: 10000,
+    headers: {
+        "User-Agent": "GeeksForGeeks-Stats-Card",
+    },
+};
 
 // Fetch data from the new GeeksForGeeks profile page
 const fetchDirectProfileData = async (username) => {
     try {
+        const decodedUsername = decodeURIComponent(username);
         const { data: html } = await axios.get(
-            `https://www.geeksforgeeks.org/profile/${username}?tab=activity`
+            `https://www.geeksforgeeks.org/profile/${encodeURIComponent(decodedUsername)}?tab=activity`,
+            GFG_AXIOS_OPTIONS
         );
 
         // Extract raw JSON string and parse it
@@ -15,7 +23,6 @@ const fetchDirectProfileData = async (username) => {
         if (!userData) {
             throw new Error("Failed to parse user data.");
         }
-        const decodedUsername = decodeURIComponent(username);
 
 
         // Gather user stats
@@ -35,15 +42,16 @@ const fetchDirectProfileData = async (username) => {
             'https://practiceapi.geeksforgeeks.org/api/v1/user/problems/submissions/',
             {
                 handle: decodedUsername
-            }
-        )
+            },
+            GFG_AXIOS_OPTIONS
+        );
         const problemStats = extractProblemStats(response.data.result);
         Object.assign(values, problemStats);
 
         return values;
     } catch (error) {
         console.error(`Error fetching new profile data for ${username}: ${error.message}`);
-        return {};
+        return null;
     }
 };
 

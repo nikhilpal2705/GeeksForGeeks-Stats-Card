@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('fs/promises');
 
 // Helper function to extract and parse JSON from a string
 const extractJsonString = (html) => {
@@ -9,30 +9,48 @@ const extractJsonString = (html) => {
 
         let i = startIndex + key.length;
 
-        // find the first {
-        while (html[i] !== '{') i++;
+        // Find the first opening brace for the JSON object.
+        while (i < html.length && html[i] !== '{') i++;
+        if (i >= html.length) {
+            throw new Error("userData JSON start not found");
+        }
 
         const jsonStart = i;
-
         let braceCount = 0;
-        let endIndex = i;
+        let endIndex = -1;
+        let inString = false;
+        let isEscaped = false;
 
         while (i < html.length) {
-            if (html[i] === '{') braceCount++;
-            else if (html[i] === '}') braceCount--;
+            const char = html[i];
 
-            if (braceCount === 0) {
-                endIndex = i + 1;
-                break;
+            if (isEscaped) {
+                isEscaped = false;
+            } else if (char === '\\') {
+                isEscaped = true;
+            } else if (char === '"') {
+                inString = !inString;
+            } else if (!inString) {
+                if (char === '{') braceCount++;
+                if (char === '}') braceCount--;
+
+                if (braceCount === 0) {
+                    endIndex = i + 1;
+                    break;
+                }
             }
+
             i++;
         }
 
+        if (endIndex === -1) {
+            throw new Error("userData JSON end not found");
+        }
+
         let jsonText = html.slice(jsonStart, endIndex);
-        // unescape \" → "
         jsonText = jsonText.replace(/\\"/g, '"');
-        const userData = JSON.parse(jsonText)
-        return userData.data;
+        const userData = JSON.parse(jsonText);
+        return userData?.data ?? null;
     } catch (error) {
         console.error('Error parsing JSON:', error.message);
         return null;
@@ -41,8 +59,21 @@ const extractJsonString = (html) => {
 
 // Helper function to extract problem stats based on difficulty
 const extractProblemStats = (result) => {
+    if (!result || typeof result !== "object") {
+        return {
+            School: 0,
+            Basic: 0,
+            Easy: 0,
+            Medium: 0,
+            Hard: 0,
+        };
+    }
+
     const counts = Object.fromEntries(
-        Object.entries(result).map(([key, value]) => [key, Object.keys(value).length])
+        Object.entries(result).map(([key, value]) => [
+            key,
+            value && typeof value === "object" ? Object.keys(value).length : 0,
+        ])
     );
 
     const problemStats = {
@@ -55,21 +86,21 @@ const extractProblemStats = (result) => {
     return problemStats;
 };
 const loadCSS = (cssFilePath) => {
-    return new Promise((resolve, reject) => {
-        fs.readFile(cssFilePath, 'utf-8', (err, data) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(data);
-            }
-        });
-    });
+    return fs.readFile(cssFilePath, 'utf-8');
 };
+
+const escapeSvgText = (value) => String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 
 
 
 module.exports = {
     extractJsonString,
     extractProblemStats,
-    loadCSS
-}
+    loadCSS,
+    escapeSvgText,
+};

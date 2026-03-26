@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeeksforGeeks Stats Card</title>
+    <meta name="description"
+        content="Generate a GeeksforGeeks stats card for GitHub profiles, portfolios, and personal websites.">
+    <meta property="og:title" content="GeeksforGeeks Stats Card">
+    <meta property="og:description"
+        content="Generate a GeeksforGeeks stats card for GitHub profiles, portfolios, and personal websites.">
+    <link rel="icon" href="https://media.geeksforgeeks.org/wp-content/cdn-uploads/gfg_favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/demo.css">
+    <script>
+        (function () {
+            const currentTheme = localStorage.getItem("theme") || "dark";
+            document.documentElement.dataset.theme = currentTheme;
+        })();
+    </script>
+</head>
+
+<body>
+    <div class="page-shell">
+        <header class="hero">
+            <div class="hero-copy">
+                <div class="brand-row">
+                    <img src="https://media.geeksforgeeks.org/gfg-gg-logo.svg" alt="GeeksforGeeks logo" width="72" height="36">
+                    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+                        <span id="themeLabel">Light mode</span>
+                    </button>
+                </div>
+                <p class="eyebrow">Generate your GeeksforGeeks stats card</p>
+                <h1>GeeksforGeeks Stats Card</h1>
+                <p class="lead">Generate a clean SVG card or raw JSON response for your GeeksforGeeks profile and drop
+                    it into GitHub, a portfolio, or any static site.</p>
+                <div class="hero-meta">
+                    <span>SVG output</span>
+                    <span>Light and dark themes</span>
+                    <span>Embeddable markdown</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="layout">
+            <section class="panel controls-panel">
+                <div class="panel-header">
+                    <h2>Build Your Card</h2>
+                    <p>Use the controls below to preview the exact URL you will embed or share.</p>
+                </div>
+
+                <label class="field">
+                    <span>GeeksforGeeks username</span>
+                    <input id="username" placeholder="nikhilpal2705" autocomplete="off">
+                </label>
+
+                <div class="field-grid">
+                    <label class="field">
+                        <span>Card theme</span>
+                        <div class="select-wrap">
+                            <select id="cardTheme">
+                                <option value="dark" selected>Dark</option>
+                                <option value="light">Light</option>
+                            </select>
+                        </div>
+                    </label>
+
+                    <div class="field checkbox-field">
+                        <span>Response mode</span>
+                        <div class="toggle-row">
+                            <input type="checkbox" id="raw">
+                            <label class="toggle-switch" for="raw" aria-label="Toggle raw JSON response">
+                                <span class="toggle-ui" aria-hidden="true"></span>
+                            </label>
+                            <span class="toggle-copy">Return raw JSON</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button class="primary" id="previewButton" type="button">Preview</button>
+                    <button class="secondary" id="openButton" type="button">Open</button>
+                    <button class="secondary" id="copyButton" type="button">Copy Markdown</button>
+                </div>
+
+                <div class="output-box">
+                    <span>Resolved URL</span>
+                    <code id="resolvedUrl"></code>
+                </div>
+            </section>
+
+            <section class="panel preview-panel">
+                <div class="panel-header">
+                    <h2>Live Preview</h2>
+                    <p>The preview shows the exact response returned by your stats card endpoint.</p>
+                </div>
+                <div id="preview" class="preview-frame">
+                    <div class="loader" aria-label="Loading preview"></div>
+                </div>
+            </section>
+
+            <footer class="footer-bar">
+                <a href="https://github.com/nikhilpal2705/GeeksForGeeks-Stats-Card" target="_blank" rel="noreferrer">
+                    <span class="footer-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" role="img" focusable="false">
+                            <path
+                                d="M12 .5C5.65.5.5 5.66.5 12.02c0 5.09 3.3 9.4 7.88 10.93.58.1.79-.25.79-.56 0-.28-.01-1.19-.02-2.16-3.21.7-3.89-1.36-3.89-1.36-.52-1.35-1.28-1.7-1.28-1.7-1.04-.72.08-.71.08-.71 1.15.08 1.75 1.18 1.75 1.18 1.02 1.76 2.67 1.25 3.32.95.1-.75.4-1.25.73-1.54-2.56-.29-5.25-1.29-5.25-5.73 0-1.27.45-2.3 1.18-3.12-.12-.29-.51-1.48.11-3.08 0 0 .97-.31 3.17 1.19a10.9 10.9 0 0 1 5.77 0c2.2-1.5 3.17-1.19 3.17-1.19.62 1.6.23 2.79.11 3.08.74.82 1.18 1.85 1.18 3.12 0 4.45-2.69 5.44-5.26 5.72.41.36.77 1.07.77 2.17 0 1.56-.01 2.82-.01 3.21 0 .31.21.67.8.56A11.53 11.53 0 0 0 23.5 12C23.5 5.66 18.35.5 12 .5Z">
+                            </path>
+                        </svg>
+                    </span>
+                    <span class="footer-copy">
+                        <strong>View project on GitHub</strong>
+                        <small>Source, issues, and deployment setup</small>
+                    </span>
+                </a>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        const state = {
+            isRaw: false,
+            currentTheme: localStorage.getItem("theme") || "dark",
+        };
+
+        const previewNode = document.getElementById("preview");
+        const usernameNode = document.getElementById("username");
+        const cardThemeNode = document.getElementById("cardTheme");
+        const rawNode = document.getElementById("raw");
+        const resolvedUrlNode = document.getElementById("resolvedUrl");
+        const themeLabelNode = document.getElementById("themeLabel");
+
+        init();
+
+        document.getElementById("themeToggle").addEventListener("click", toggleTheme);
+        document.getElementById("previewButton").addEventListener("click", preview);
+        document.getElementById("openButton").addEventListener("click", openUrl);
+        document.getElementById("copyButton").addEventListener("click", copyMarkdown);
+        usernameNode.addEventListener("input", syncUi);
+        cardThemeNode.addEventListener("change", syncUi);
+        rawNode.addEventListener("change", () => {
+            state.isRaw = rawNode.checked;
+            cardThemeNode.disabled = state.isRaw;
+            syncUi();
+        });
+
+        function init() {
+            usernameNode.value = "nikhilpal2705";
+            cardThemeNode.value = "dark";
+            rawNode.checked = false;
+            state.isRaw = false;
+            renderThemeLabel();
+            syncUi();
+            preview();
+        }
+
+        function toggleTheme() {
+            state.currentTheme = state.currentTheme === "dark" ? "light" : "dark";
+            localStorage.setItem("theme", state.currentTheme);
+            document.documentElement.dataset.theme = state.currentTheme;
+            renderThemeLabel();
+        }
+
+        function renderThemeLabel() {
+            themeLabelNode.textContent = state.currentTheme === "dark" ? "Light mode" : "Dark mode";
+        }
+
+        function getUsername() {
+            return usernameNode.value.trim() || "nikhilpal2705";
+        }
+
+        function buildUrl() {
+            const base = location.origin + "/" + encodeURIComponent(getUsername());
+            return state.isRaw
+                ? base + "?raw=true"
+                : base + "?theme=" + encodeURIComponent(cardThemeNode.value);
+        }
+
+        function syncUi() {
+            resolvedUrlNode.textContent = buildUrl();
+        }
+
+        async function preview() {
+            const requestUrl = buildUrl();
+            previewNode.innerHTML = '<div class="loader" aria-label="Loading preview"></div>';
+
+            try {
+                if (state.isRaw) {
+                    const response = await fetch(requestUrl);
+                    const contentType = response.headers.get("content-type") || "";
+                    const data = contentType.includes("application/json")
+                        ? await response.json()
+                        : await response.text();
+
+                    if (!response.ok) {
+                        throw new Error(typeof data === "string" ? data : JSON.stringify(data, null, 2));
+                    }
+
+                    const pre = document.createElement("pre");
+                    pre.textContent = JSON.stringify(data, null, 2);
+                    previewNode.replaceChildren(pre);
+                    return;
+                }
+
+                const img = document.createElement("img");
+                img.alt = "GeeksforGeeks stats card preview";
+                await new Promise((resolve, reject) => {
+                    img.onload = resolve;
+                    img.onerror = () => reject(new Error("User not found or data unavailable."));
+                    img.src = requestUrl;
+                });
+                previewNode.replaceChildren(img);
+            } catch (error) {
+                const pre = document.createElement("pre");
+                pre.textContent = error.message;
+                previewNode.replaceChildren(pre);
+            }
+        }
+
+        function openUrl() {
+            window.open(buildUrl(), "_blank", "noopener,noreferrer");
+        }
+
+        async function copyMarkdown() {
+            const text = state.isRaw
+                ? buildUrl()
+                : `[![GeeksforGeeks Stats](${buildUrl()})](https://www.geeksforgeeks.org/profile/${encodeURIComponent(getUsername())})`;
+
+            try {
+                await navigator.clipboard.writeText(text);
+                document.getElementById("copyButton").textContent = "Copied";
+                window.setTimeout(() => {
+                    document.getElementById("copyButton").textContent = "Copy Markdown";
+                }, 1500);
+            } catch (error) {
+                window.prompt("Copy this value:", text);
+            }
+        }
+
+        if (window.location.hostname !== "localhost") {
+            window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+            const script = document.createElement("script");
+            script.src = "/_vercel/insights/script.js";
+            script.defer = true;
+            document.head.appendChild(script);
+        }
+    </script>
+</body>
+
+</html>
