@@ -602,7 +602,7 @@ button:active {
 @media (max-width: 640px) {
     .page-shell {
         width: min(1180px, 100%);
-        padding-inline: 10px;
+        padding-inline: 16px;
         padding: 16px 0 24px;
     }
 
@@ -650,9 +650,11 @@ button:active {
     }
 
     h1 {
-        font-size: clamp(2.4rem, 15vw, 4rem);
+        font-size: clamp(2rem, 12vw, 3.2rem);
         line-height: 0.98;
-        max-width: 8ch;
+        max-width: 100%;
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 
     .lead {
@@ -735,7 +737,7 @@ button:active {
 @media (max-width: 420px) {
     .page-shell {
         width: min(1180px, 100%);
-        padding-inline: 8px;
+        padding-inline: 14px;
     }
 
     .hero-copy,
@@ -753,7 +755,8 @@ button:active {
     }
 
     h1 {
-        font-size: clamp(2.15rem, 14vw, 3.2rem);
+        font-size: clamp(1.8rem, 11vw, 2.6rem);
+        max-width: 100%;
     }
 
     .lead {
