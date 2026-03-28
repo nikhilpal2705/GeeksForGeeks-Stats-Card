@@ -4,7 +4,7 @@
         radial-gradient(circle at 85% 20%, rgba(255, 161, 22, 0.14), transparent 22%),
         linear-gradient(180deg, #f7f3e8 0%, #ece5d6 100%);
     --panel-bg: rgba(255, 252, 246, 0.88);
-    --panel-border: rgba(30, 41, 59, 0.12);
+    --panel-border: rgba(30, 41, 59, 0.08);
     --text-strong: #162014;
     --text-muted: #536055;
     --accent: #2f8d46;
@@ -12,7 +12,7 @@
     --accent-soft: rgba(47, 141, 70, 0.12);
     --secondary-bg: rgba(22, 32, 20, 0.04);
     --input-bg: rgba(255, 255, 255, 0.86);
-    --shadow: 0 24px 80px rgba(29, 37, 29, 0.12);
+    --shadow: 0 10px 22px rgba(29, 37, 29, 0.045);
     --code-bg: #152313;
     --code-text: #f1f8f0;
     --output-bg: linear-gradient(180deg, #f8fbf4 0%, #eff4ea 100%);
@@ -46,7 +46,7 @@
     --accent-soft: rgba(88, 179, 104, 0.16);
     --secondary-bg: rgba(255, 255, 255, 0.05);
     --input-bg: rgba(255, 255, 255, 0.04);
-    --shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+    --shadow: 0 12px 24px rgba(0, 0, 0, 0.16);
     --code-bg: #050b08;
     --code-text: #ddf0df;
     --output-bg: linear-gradient(180deg, rgba(11, 24, 14, 0.96) 0%, rgba(13, 31, 16, 0.96) 100%);
@@ -74,6 +74,8 @@ html,
 body {
     margin: 0;
     min-height: 100%;
+    width: 100%;
+    overflow-x: hidden;
 }
 
 body {
@@ -94,9 +96,11 @@ body::before {
 }
 
 .page-shell {
-    width: min(1180px, calc(100% - 32px));
+    width: min(1180px, 100%);
     margin: 0 auto;
+    padding-inline: 16px;
     padding: 40px 0 28px;
+    overflow-x: clip;
 }
 
 .hero {
@@ -104,12 +108,16 @@ body::before {
 }
 
 .hero-copy {
+    position: relative;
     padding: 28px;
-    border: 1px solid var(--panel-border);
+    border: 1px solid transparent;
     background: var(--panel-bg);
+    background-clip: padding-box;
     backdrop-filter: blur(18px);
-    box-shadow: var(--shadow);
+    box-shadow: inset 0 0 0 1px var(--panel-border), var(--shadow);
     border-radius: 28px;
+    overflow: hidden;
+    max-width: 100%;
 }
 
 .brand-row {
@@ -117,6 +125,16 @@ body::before {
     align-items: center;
     justify-content: space-between;
     gap: 16px;
+}
+
+.brand-mark {
+    display: block;
+    width: 88px;
+    height: 40px;
+    object-fit: contain;
+    object-position: left center;
+    flex: 0 0 auto;
+    margin-top: 0;
 }
 
 .theme-toggle {
@@ -127,6 +145,28 @@ body::before {
     padding: 10px 16px;
     font: inherit;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    line-height: 1;
+}
+
+.theme-toggle-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    flex: 0 0 32px;
+    line-height: 0;
+}
+
+.theme-toggle-icon svg {
+    width: 16px;
+    height: 16px;
+    display: block;
 }
 
 .eyebrow {
@@ -172,15 +212,24 @@ h1 {
     display: grid;
     grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
     gap: 22px;
+    min-width: 0;
+}
+
+.layout > * {
+    min-width: 0;
 }
 
 .panel {
-    border: 1px solid var(--panel-border);
+    position: relative;
+    border: 1px solid transparent;
     background: var(--panel-bg);
+    background-clip: padding-box;
     backdrop-filter: blur(18px);
-    box-shadow: var(--shadow);
+    box-shadow: inset 0 0 0 1px var(--panel-border), var(--shadow);
     border-radius: 28px;
+    overflow: hidden;
     padding: 24px;
+    max-width: 100%;
 }
 
 .panel-header h2 {
@@ -439,10 +488,11 @@ button:active {
         linear-gradient(315deg, rgba(255, 161, 22, 0.08), transparent 28%),
         var(--secondary-bg);
     overflow: auto;
+    max-width: 100%;
 }
 
 .preview-frame img {
-    width: 100%;
+    width: min(100%, 500px);
     max-width: 500px;
     display: block;
 }
@@ -496,6 +546,7 @@ button:active {
     box-shadow: 0 10px 26px rgba(0, 0, 0, 0.04);
     transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
     min-width: 340px;
+    max-width: 100%;
 }
 
 .footer-bar a:hover {
@@ -550,8 +601,9 @@ button:active {
 
 @media (max-width: 640px) {
     .page-shell {
-        width: min(100% - 20px, 1180px);
-        padding-top: 20px;
+        width: min(1180px, 100%);
+        padding-inline: 10px;
+        padding: 16px 0 24px;
     }
 
     .hero-copy,
@@ -568,27 +620,157 @@ button:active {
         gap: 12px;
     }
 
+    .brand-row img {
+        width: 78px;
+        height: 36px;
+        margin-top: 0;
+    }
+
     .theme-toggle {
         padding: 9px 14px;
         font-size: 0.95rem;
+        margin-left: auto;
+    }
+
+    .theme-toggle-icon {
+        width: 30px;
+        height: 30px;
+        flex-basis: 30px;
+    }
+
+    .theme-toggle-icon svg {
+        width: 15px;
+        height: 15px;
+    }
+
+    .eyebrow {
+        margin-top: 18px;
+        font-size: 0.76rem;
+        letter-spacing: 0.1em;
+    }
+
+    h1 {
+        font-size: clamp(2.4rem, 15vw, 4rem);
+        line-height: 0.98;
+        max-width: 8ch;
+    }
+
+    .lead {
+        margin-top: 16px;
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+
+    .hero-meta {
+        gap: 8px;
+        margin-top: 18px;
+    }
+
+    .hero-meta span {
+        font-size: 0.88rem;
+        padding: 8px 12px;
+    }
+
+    .controls-panel,
+    .preview-panel {
+        gap: 16px;
+    }
+
+    .layout {
+        gap: 16px;
+    }
+
+    .panel-header h2 {
+        font-size: 1.18rem;
+    }
+
+    .panel-header p {
+        font-size: 0.98rem;
+    }
+
+    .toggle-row,
+    input,
+    select,
+    button {
+        min-height: 54px;
+    }
+
+    .output-box {
+        padding: 14px 16px;
+        min-height: 84px;
+    }
+
+    .output-box code {
+        font-size: 0.92rem;
+    }
+
+    .preview-frame {
+        min-height: 260px;
+        padding: 12px;
+        border-radius: 18px;
+    }
+
+    .preview-frame pre {
+        padding: 14px;
+        font-size: 0.9rem;
     }
 
     .footer-bar {
-        padding-top: 8px;
+        padding-top: 10px;
     }
 
     .footer-bar a {
         width: 100%;
         min-width: 0;
+        padding: 12px 14px;
+        gap: 12px;
     }
 
     .field-grid,
     .actions {
         grid-template-columns: 1fr;
     }
+}
 
-    .preview-frame {
-        min-height: 300px;
-        padding: 12px;
+@media (max-width: 420px) {
+    .page-shell {
+        width: min(1180px, 100%);
+        padding-inline: 8px;
+    }
+
+    .hero-copy,
+    .panel {
+        padding: 16px;
+        border-radius: 20px;
+    }
+
+    .theme-toggle {
+        margin-left: 0;
+    }
+
+    .layout {
+        gap: 14px;
+    }
+
+    h1 {
+        font-size: clamp(2.15rem, 14vw, 3.2rem);
+    }
+
+    .lead {
+        font-size: 0.98rem;
+    }
+
+    .hero-meta {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .hero-meta span {
+        width: 100%;
+        text-align: center;
+    }
+
+    .footer-copy small {
+        font-size: 0.82rem;
     }
 }
