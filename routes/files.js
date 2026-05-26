@@ -12,6 +12,7 @@ router.get("/", (req, res, next) => {
     if (req.query.username) {
         return next(); // Ensure next middleware is defined to handle this case
     }
+    res.setHeader("Cache-Control", "public, max-age=0, must-revalidate");
     return res.sendFile(path.join(__dirname, "../public/index.html"));
 });
 

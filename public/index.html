@@ -247,8 +247,12 @@
             }
         }
 
-        if (window.location.hostname !== "localhost") {
-            window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+        if (location.protocol === "https:"
+            && !["localhost", "127.0.0.1", "::1"].includes(location.hostname)) {
+            window.va = window.va || function () {
+                (window.vaq = window.vaq || []).push(arguments);
+            };
+
             const script = document.createElement("script");
             script.src = "/_vercel/insights/script.js";
             script.defer = true;
