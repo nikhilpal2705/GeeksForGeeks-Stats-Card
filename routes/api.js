@@ -8,6 +8,6 @@ router.get("/", getCard);
 // Handle requests with username in path (/:username)
 router.get("/:username", getCard);
 // Catch-all route for not found
-router.all("*", notFound);
+router.use(notFound);
 
 module.exports = router;

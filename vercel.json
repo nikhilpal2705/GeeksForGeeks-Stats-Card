@@ -1,15 +1,29 @@
 {
+    "$schema": "https://openapi.vercel.sh/vercel.json",
     "version": 2,
     "builds": [
         {
-            "src": "index.js",
-            "use": "@vercel/node"
+            "src": "server.js",
+            "use": "@vercel/node",
+            "config": {
+                "maxDuration": 20,
+                "includeFiles": [
+                    "public/**"
+                ]
+            }
         }
     ],
     "routes": [
         {
+            "src": "/demo.css",
+            "headers": {
+                "Cache-Control": "public, max-age=3600, must-revalidate"
+            },
+            "continue": true
+        },
+        {
             "src": "/(.*)",
-            "dest": "index.js"
+            "dest": "server.js"
         }
     ]
 }
