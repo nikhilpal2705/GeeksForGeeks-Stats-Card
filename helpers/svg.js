@@ -2,14 +2,31 @@ const path = require('path');
 const { loadCSS, escapeSvgText } = require('./common');
 
 const generateSvg = async (data, theme = 'dark') => {
-    // Load the dynamic CSS
-    const cssFilePath = path.join(__dirname, `../public/css/${theme === 'light' ? 'light.css' : 'dark.css'}`);
+    // Load cached dynamic CSS
+    const activeTheme = theme === 'light' ? 'light' : 'dark';
+    const cssFilePath = path.join(__dirname, `../public/css/${activeTheme}.css`);
     const themeCSS = await loadCSS(cssFilePath);
 
     const svgFilePath = path.join(__dirname, '../public/css/svg.css');
     const svgCSS = await loadCSS(svgFilePath);
+
     const safeUserHandle = escapeSvgText(data.userHandle);
-    const encodedUserHandle = encodeURIComponent(data.userHandle ?? "");
+    const encodedUserHandle = encodeURIComponent(data.userHandle ?? '');
+
+    const streakVal = data.streak !== undefined ? data.streak : data.pod_solved_longest_streak;
+    const globalStreakVal = data.pod_solved_global_longest_streak || 0;
+    const streakDisplay = globalStreakVal > 0 ? `${streakVal} / ${globalStreakVal}` : `${streakVal}`;
+    const streakFontSize = streakDisplay.length > 8 ? '15px' : '20px';
+
+    const rankingText = data.institute_rank ? `#${escapeSvgText(data.institute_rank)}` : '';
+    const overallScore = data.total_score !== undefined && data.total_score !== null ? data.total_score : '_ _';
+    const totalSolved = data.total_problems_solved !== undefined && data.total_problems_solved !== null ? data.total_problems_solved : '_ _';
+    const monthScore = data.current_rating
+        ? data.current_rating
+        : (data.monthly_score !== undefined && data.monthly_score !== null ? data.monthly_score : '_ _');
+    const monthScoreTitle = data.current_rating ? 'Contest Rating' : 'Monthly Coding Score';
+
+    const progressValue = Number(data.ProgressBar || 0).toFixed(2);
 
     return (`
     <svg width="500" height="320" viewBox="0 0 500 320" version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -18,7 +35,7 @@ const generateSvg = async (data, theme = 'dark') => {
         <style id="default-colors">
             ${themeCSS}
             :root{
-                --progress-dasharray: ${data.ProgressBar}
+                --progress-dasharray: ${progressValue}
             }
         </style>
         <rect id="background" />
@@ -36,29 +53,29 @@ const generateSvg = async (data, theme = 'dark') => {
                 </svg>
             </g>
         </g><a href="https://www.geeksforgeeks.org/profile/${encodedUserHandle}/" target="_blank" id="username"><text
-                id="username-text">${safeUserHandle}</text></a><text id="ranking"></text>
+                id="username-text">${safeUserHandle}</text></a><text id="ranking">${rankingText}</text>
         <g id="total-streak">
             <circle id="total-streak-bg" />
-            <circle id="total-streak-ring" /><text id="total-streak-text">${data.pod_solved_longest_streak}
-                /${data.pod_solved_global_longest_streak}</text>
+            <circle id="total-streak-ring" />
+            <text id="total-streak-text" style="font-size: ${streakFontSize};">${streakDisplay}</text>
             <text id="streak-text">STREAK</text>
             <text id="days-text">days</text>
         </g>
         <g id="solved">
             <g id="school-solved"><text id="school-solved-type">School</text>
-                <text id="school-solved-count">${data.School}</text>
+                <text id="school-solved-count">${data.School ?? 0}</text>
             </g>
             <g id="basic-solved"><text id="basic-solved-type">Basic</text>
-                <text id="basic-solved-count">${data.Basic}</text>
+                <text id="basic-solved-count">${data.Basic ?? 0}</text>
             </g>
             <g id="easy-solved"><text id="easy-solved-type">Easy</text>
-                <text id="easy-solved-count">${data.Easy}</text>
+                <text id="easy-solved-count">${data.Easy ?? 0}</text>
             </g>
             <g id="medium-solved"><text id="medium-solved-type">Medium</text>
-                <text id="medium-solved-count">${data.Medium}</text>
+                <text id="medium-solved-count">${data.Medium ?? 0}</text>
             </g>
-            <g id="hard-solved"><text id="hard-solved-type">Hard
-                </text><text id="hard-solved-count">${data.Hard}</text>
+            <g id="hard-solved"><text id="hard-solved-type">Hard</text>
+                <text id="hard-solved-count">${data.Hard ?? 0}</text>
             </g>
         </g>
         <g id="total-activity">
@@ -67,24 +84,22 @@ const generateSvg = async (data, theme = 'dark') => {
             <line x1="0" y1="0" x2="0" y2="64" id="_1d" />
             <g id="overall-score">
                 <text id="overall-score-title">Coding Score</text>
-                <text id="overall-score-count">${data.total_score || '_ _'}</text>
+                <text id="overall-score-count">${overallScore}</text>
             </g>
             <g id="total-solved">
                 <text id="total-solved-title">Problem Solved</text>
-                <text id="total-solved-count">${data.total_problems_solved || '_ _'}</text>
+                <text id="total-solved-count">${totalSolved}</text>
             </g>
             <g id="month-score">
-                <text id="month-score-title">${data.current_rating ? "Contest Rating" : "Monthly Coding Score"}</text>
-                <text id="month-score-count">${data.current_rating ? data.current_rating : (data.monthly_score || '_ _')}
-                </text>
+                <text id="month-score-title">${monthScoreTitle}</text>
+                <text id="month-score-count">${monthScore}</text>
             </g>
         </g>
         <style id="_lx">
             ${svgCSS}
         </style>
     </svg>
-`)
+    `);
+};
 
-}
-
-module.exports = { generateSvg }
+module.exports = { generateSvg };

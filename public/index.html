@@ -70,15 +70,25 @@
                         </div>
                     </label>
 
-                    <div class="field checkbox-field">
-                        <span>Response mode</span>
-                        <div class="toggle-row">
-                            <input type="checkbox" id="raw">
-                            <label class="toggle-switch" for="raw" aria-label="Toggle raw JSON response">
-                                <span class="toggle-ui" aria-hidden="true"></span>
-                            </label>
-                            <span class="toggle-copy">Return raw JSON</span>
+                    <label class="field">
+                        <span>Streak mode</span>
+                        <div class="select-wrap">
+                            <select id="streakType">
+                                <option value="longest" selected>Longest streak</option>
+                                <option value="current">Current streak</option>
+                            </select>
                         </div>
+                    </label>
+                </div>
+
+                <div class="field checkbox-field">
+                    <span>Response mode</span>
+                    <div class="toggle-row">
+                        <input type="checkbox" id="raw">
+                        <label class="toggle-switch" for="raw" aria-label="Toggle raw JSON response">
+                            <span class="toggle-ui" aria-hidden="true"></span>
+                        </label>
+                        <span class="toggle-copy">Return raw JSON</span>
                     </div>
                 </div>
 
@@ -131,6 +141,7 @@
         const previewNode = document.getElementById("preview");
         const usernameNode = document.getElementById("username");
         const cardThemeNode = document.getElementById("cardTheme");
+        const streakTypeNode = document.getElementById("streakType");
         const rawNode = document.getElementById("raw");
         const resolvedUrlNode = document.getElementById("resolvedUrl");
         const themeLabelNode = document.getElementById("themeLabel");
@@ -146,6 +157,7 @@
         document.getElementById("copyButton").addEventListener("click", copyMarkdown);
         usernameNode.addEventListener("input", syncUi);
         cardThemeNode.addEventListener("change", syncUi);
+        streakTypeNode.addEventListener("change", syncUi);
         rawNode.addEventListener("change", () => {
             state.isRaw = rawNode.checked;
             cardThemeNode.disabled = state.isRaw;
@@ -155,6 +167,7 @@
         function init() {
             usernameNode.value = "nikhilpal2705";
             cardThemeNode.value = "dark";
+            streakTypeNode.value = "longest";
             rawNode.checked = false;
             state.isRaw = false;
             renderThemeLabel();
@@ -181,9 +194,16 @@
 
         function buildUrl() {
             const base = location.origin + "/" + encodeURIComponent(getUsername());
-            return state.isRaw
-                ? base + "?raw=true"
-                : base + "?theme=" + encodeURIComponent(cardThemeNode.value);
+            const params = [];
+            if (state.isRaw) {
+                params.push("raw=true");
+            } else {
+                params.push("theme=" + encodeURIComponent(cardThemeNode.value));
+            }
+            if (streakTypeNode.value === "current") {
+                params.push("streak=current");
+            }
+            return base + (params.length ? "?" + params.join("&") : "");
         }
 
         function syncUi() {

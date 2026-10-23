@@ -83,6 +83,18 @@ You can customize the card's theme using the `?theme` parameter.
   
 ---
 
+## 🔥 Streak Options
+By default, the card displays your **longest streak** against the global longest streak. You can also display your **current streak** using the `streak=current` parameter.
+- **Default streak:** `longest`
+- **Available option:** `current`
+
+#### Example:
+```md
+![](https://gfgstatscard.vercel.app/<YOUR_USERNAME>?streak=current)
+```
+
+---
+
 ## 🔍 Fetch Raw Data
 If you'd like to retrieve raw JSON data instead of a rendered card, use the `raw=true` parameter.
 
